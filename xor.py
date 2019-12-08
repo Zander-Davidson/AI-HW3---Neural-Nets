@@ -1,36 +1,51 @@
 import math
+import random
+import datetime
+
 
 X = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]] # training set, an XOR truth table
 N = 3 # number of layers in neural net
 neurons = [2, 2, 1] # number of neurons in the hidden and output layers, respectively
 
 
-weight = [[[20, 20], [-20, -20]], [[20, 20]]]
-bias = [[-10, 30], [-30]]
+# weight = [[[20, 20], [-20, -20]], [[20, 20]]]
+# bias = [[-10, 30], [-30]]
 
 
 def sigmoid(a):
     return 1 / (1 + math.exp(-a))
 
-# weights = [] # [layer][neuron][weight], stores the weights of all neural connections
-# biases = [] # [layer][neuron], stores biases for each nueron
+weight = [] # [layer][neuron][weight], stores the weights of all neural connections
+bias = [] # [layer][neuron], stores biases for each nueron
 
 
 
 
 
-# # assign random initial weights
+# assign random initial weights
 
-# # output layer has no connection to another
-# for l in range(N-1):
+random.seed(datetime.datetime.now())
+# output layer has no connection to another
+for l in range(1, N):
+    # print('\tLayer ' + str(l))
+    layerBias = []
+    layerWeight = []
 
-#     # 1 axon per neuron -> "neurons" gives number of axons per layer
-#     for n in range(neurons[l]):
-#         bias[l][n] = 0
+    # 1 axon per neuron -> "neurons" gives number of axons per layer
+    for n in range(neurons[l]):
+        # print('\t\tNeuron ' + str(n))
+        layerBias.append(0)
+        neuronWeight = []
 
-#         # if there are h neurons in layer n+1, we need h connections from the current axon to it
-#         for w in range(neurons[l+1]):
-#             weight[l][n][w] = 0
+        # if there are h neurons in layer n+1, we need h connections from the current axon to it
+        for w in range(neurons[l-1]):
+            # print('\t\t\tWeight ' + str(w))
+            neuronWeight.append(random.random())
+        
+        layerWeight.append(neuronWeight)
+
+    bias.append(layerBias)
+    weight.append(layerWeight)
 
 # samples in training set
 for x in X:
