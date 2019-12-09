@@ -3,9 +3,18 @@ import random
 import datetime
 
 
+def f(x) = 1 / (1 + math.e^(-x))
+def fp(x) = math.e^(-x) / (1 + math.e^(-x))^2
+def fp(y) = y(1 - y)  # = fp(f(x))
+
+
 X = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]] # training set, an XOR truth table
 N = 3 # number of layers in neural net
 neurons = [2, 2, 1] # number of neurons in the hidden and output layers, respectively
+learnRate = 0.1
+weight = [] # [layer][neuron][weight], stores the weights of all neural connections
+delta = [] # [layer][neuron][weight], stores the gradients from neuron i to j, with indices corresponding to the weight list
+bias = [] # [layer][neuron], stores biases for each nueron
 
 
 # weight = [[[20, 20], [-20, -20]], [[20, 20]]]
@@ -15,8 +24,34 @@ neurons = [2, 2, 1] # number of neurons in the hidden and output layers, respect
 def sigmoid(a):
     return 1 / (1 + math.exp(-a))
 
-weight = [] # [layer][neuron][weight], stores the weights of all neural connections
-bias = [] # [layer][neuron], stores biases for each nueron
+# derivative of sigmoid function w.r.t. y
+def sigDeriv(y):
+    return y * (1 - y)
+
+# yj: output of a neuron in the final layer.
+# tj: expected output for this neuron
+def deltaOutput(yj, tj, numConnections):
+    return [sigDeriv(yj) * (yj - tj) for j in range(numConnections)]
+
+# yi: output from neuron i (hidden layer). 
+# dj: list of deltas for every input to neuron j (hidden layer + 1).
+# wj: list of weights for every input to neuron j (hidden layer + 1).
+# xih: input from neuron h (hidden layer - 1) to neuron i (hidden layer).
+# returns a list of deltas for each connection from each h (hidden layer - 1) to the single i (hidden layer)
+def deltaHidden(yi, dj, wj, xi):
+    # output of n
+    derivOutput = sigDeriv(yi)
+    weightSum = 0
+    for n in range(dj):
+        weightSum += dj[n] * wj[n]
+    return [derivOutput * weightSum * xih for xih in xi]
+
+
+def backpropagate():
+    for j in range(neurons[-1])
+        deltaWeight = learnRate * deltaOutput(neurons[-2]) * 
+
+
 
 
 
@@ -74,6 +109,8 @@ for x in X:
 
         print('\txIn = yOut: ' + str(yOut[-1]))
         xIn = yOut
+
+    backpropagate()
 
 
 
